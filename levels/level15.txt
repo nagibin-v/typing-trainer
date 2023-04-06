@@ -1,0 +1,10 @@
+Segment Tree get
+100 0.97
+int get(int v, int left, int right, int x, int y) {
+  if (y <= left || right <= x)
+    return INF;
+  if (x <= left && right <= y)
+    return val[v];
+  int mid = (left + right) / 2;
+  return min(get(2 * v + 1, left, mid, x, y), get(2 * v + 2, mid, right, x, y)) + mod[v];
+}

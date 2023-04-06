@@ -1,0 +1,14 @@
+Segment Tree Add
+100 0.97
+void add(int v, int left, int right, int x, int y, int d) {
+  if (y <= left || right <= x)
+    return;
+  if (x <= left && right <= y) {
+    val[v] += d;
+    mod[v] += d;
+  }
+  int mid = (left + right) / 2;
+  add(2 * v + 1, left, mid, x, y, d);
+  add(2 * v + 2, mid, right, x, y, d);
+  val[v] = min(val[2 * v + 1], val[2 * v + 2]) + mod[v];
+}
