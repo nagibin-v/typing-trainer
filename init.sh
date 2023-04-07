@@ -1,4 +1,4 @@
 #!/bin/bash
 
-virtualenv -p python3 venv
-python -m pip install requirements.txt
+python3 -m virtualenv -p python venv
+python3 -m pip install -r requirements.txt
