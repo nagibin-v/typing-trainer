@@ -15,7 +15,7 @@ class StatisticsCalculator(metaclass=Singleton):
         self.letter_counter += letter_counter
         self.update_stats_file()
 
-    def load_stats_file(self):
+    def load_stats_file(self) -> None:
         with open(texts.STATISTICS_PATH, 'rb') as file:
             try:
                 data = pickle.load(file)
@@ -25,7 +25,7 @@ class StatisticsCalculator(metaclass=Singleton):
                 self.mistakes_counter = Counter()
                 self.letter_counter = Counter()
 
-    def update_stats_file(self):
+    def update_stats_file(self) -> None:
         with open(texts.STATISTICS_PATH, 'wb') as file:
             pickle.dump((self.mistakes_counter, self.letter_counter), file)
 

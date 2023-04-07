@@ -1,0 +1,7 @@
+Second half of the digits
+60 0.95
+The other half of the digits has special symbols too:
+6 and ^, 7 and &, 8 and *, 9 and (, 10 and )
+6^5 = 3 (if that's xor), 7&4=4, 8*9 = 72, gcd(15, 12) = 3
+6^5 = 7776 (if that's power of), True && False == False, lcm(15,12)=60
+88*99=8712, 998244353 is a prime number

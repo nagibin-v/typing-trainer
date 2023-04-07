@@ -1,10 +1,6 @@
-Segment Tree get
-100 0.97
-int get(int v, int left, int right, int x, int y) {
-  if (y <= left || right <= x)
-    return INF;
-  if (x <= left && right <= y)
-    return val[v];
-  int mid = (left + right) / 2;
-  return min(get(2 * v + 1, left, mid, x, y), get(2 * v + 2, mid, right, x, y)) + mod[v];
-}
+B and N
+40 0.9
+Letters b and n are the last letters typed with forefingers! Congratulations!
+bbb nnn nn bb bbbnnn nbbn bbnn bnnb bb nn b n n b
+banana big achievement block bed name need
+now you know how to type all the letters right

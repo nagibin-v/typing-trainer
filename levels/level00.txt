@@ -3,4 +3,4 @@ Welcome!
 Welcome to Typing Trainer! This is a project for Python course created by Vsevolod Nagibin
 Its intend is to test your typing skills and to teach you to type faster
 The tab symbol is shown like	and enter symbol is shown like
-We recommend you learning ten-finger blind typing because it can increase your speed dramatically. Hope you will enjoy this app. Good luck!
+I recommend you learning ten-finger blind typing because it can increase your speed dramatically. Hope you will enjoy this app. Good luck!

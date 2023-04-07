@@ -15,13 +15,12 @@ class KeyDisplay(qtw.QLabel):
         self.keys = keys
         self.cur_option = 0
         self.line_width = 3
-        self.mid_line_width = 3
         self.auto_fill_background = True
         self.set_frame_style(qtw.QFrame.Panel | qtw.QFrame.Raised)
         self.set_fixed_size(qtc.QSize(width, statistics.KEY_SIZE))
         self.font = fonts.KEY_FONT
         self.alignment = qtc.Qt.AlignmentFlag.AlignCenter
-        self.update()
+        self.update_text()
 
     def get_color(self) -> qtg.QColor:
         accuracy = StatisticsCalculator().get_accuracy(self.get_symbol())
@@ -55,14 +54,14 @@ class KeyDisplay(qtw.QLabel):
 
     def switch_shift(self) -> None:
         self.cur_option = 1 - self.cur_option
-        self.update()
+        self.update_text()
 
     def set_color(self) -> None:
         palette = self.palette
         palette.set_color(self.background_role(), qtg.QColor(self.get_color()))
         self.palette = palette
 
-    def update(self) -> None:
+    def update_text(self) -> None:
         self.text = self.get_text()
         self.set_color()
 
@@ -92,7 +91,7 @@ class StatisticsPage(BasePage):
             key.switch_shift()
 
     def make_shift_checkbox(self) -> None:
-        shift_button = qtw.QPushButton(text='Shift',parent=self)
+        shift_button = qtw.QPushButton(text='Shift', parent=self)
         shift_button.font = fonts.KEY_FONT
         shift_button.move(*statistics.SHIFT_BUTTON_LOCATION)
         shift_button.set_fixed_size(qtc.QSize(statistics.LONG_KEY_SIZE, statistics.KEY_SIZE))

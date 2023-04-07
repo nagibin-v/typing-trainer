@@ -25,6 +25,6 @@ class UploadLevelPage(BasePage):
         layout.add_widget(BaseButton(texts.UPLOAD_BUTTON, self.load_level))
         self.set_layout(layout)
 
-    def load_level(self):
+    def load_level(self) -> None:
         file_name = qtw.QFileDialog.get_open_file_name(self, filter='Text (*.txt)')[0]
         MainWindowActions().level_run_function(file_name)
