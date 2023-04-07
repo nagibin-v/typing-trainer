@@ -2,12 +2,17 @@ from PySide6 import QtWidgets as qtw, QtCore as qtc, QtGui as qtg
 from __feature__ import snake_case, true_property
 from collections.abc import Callable
 
+from base_page import BasePage
 from base_button import BaseButton
 from main_window_actions import MainWindowActions
 from constraints import colors, fonts, texts
 
 
-class MainMenuPage(qtw.QFrame):
+class MainMenuPage(BasePage):
+    """
+    MainMenuPage is a page for main menu, inherits BasePage
+    Does not take any parameters
+    """
     def __init__(self):
         super().__init__()
         layout = qtw.QVBoxLayout()
@@ -20,7 +25,11 @@ class MainMenuPage(qtw.QFrame):
         layout.add_stretch()
         self.set_layout(layout)
 
-    def make_logo(self) -> qtw.QLabel:
+    @staticmethod
+    def make_logo() -> qtw.QLabel:
+        """
+        Returns the QLabel with logo
+        """
         logo = qtw.QLabel(text=texts.TITLE)
         logo.font = fonts.LOGO_FONT
         logo.set_style_sheet(f'color: {colors.GREEN_COLOR}')

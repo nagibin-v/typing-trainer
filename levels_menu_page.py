@@ -9,7 +9,13 @@ from base_header import BaseHeader
 from base_button import BaseButton
 
 
-class LevelBox(qtw.QFrame):
+class BlockOfLevels(qtw.QFrame):
+    """
+    BlockOfLevels is a horizontal block of buttons to load levels, inherits QFrame
+
+    Parameters:
+        first (int), last(int): the range of the levels block contains, includes first, excludes last
+    """
     def __init__(self, first: int, last: int):
         super().__init__()
         layout = qtw.QHBoxLayout()
@@ -17,13 +23,17 @@ class LevelBox(qtw.QFrame):
         for i in range(first, last):
             number_text = f'{i:02d}'
             button = BaseButton(number_text, partial(MainWindowActions().level_run_function,
-                                           texts.LEVEL_PATH_FIRST + number_text + texts.LEVEL_PATH_LAST))
+                                                     texts.LEVEL_PATH_FIRST + number_text + texts.LEVEL_PATH_LAST))
             button.set_fixed_size(qtc.QSize(sizes.BUTTON_SIZE, sizes.BUTTON_SIZE))
             layout.add_widget(button)
         self.set_layout(layout)
 
 
 class LevelsList(qtw.QFrame):
+    """
+    LevelsList is a list of all levels, inherits QFrame
+    Does not take any parameters
+    """
     def __init__(self):
         super().__init__()
         layout = qtw.QVBoxLayout()
@@ -32,15 +42,20 @@ class LevelsList(qtw.QFrame):
             self.add_group_of_levels(layout, name, first, last)
         self.set_layout(layout)
 
-    def add_group_of_levels(self, layout: qtw.QLayout, title: str, first: int, last: int) -> None:
+    @staticmethod
+    def add_group_of_levels(layout: qtw.QLayout, title: str, first: int, last: int) -> None:
         title_label = qtw.QLabel(text=title)
         title_label.font = fonts.HEADER_FONT
         title_label.set_style_sheet(f'color: {colors.GREEN_COLOR}')
         layout.add_widget(title_label)
-        layout.add_widget(LevelBox(first, last))
+        layout.add_widget(BlockOfLevels(first, last))
 
 
 class LevelsMenuPage(BasePage):
+    """
+    LevelsMenuPage is a page for level selection menu, inherits BasePage
+    Does not take any parameters
+    """
     def __init__(self):
         super().__init__()
         layout = qtw.QVBoxLayout()
@@ -49,7 +64,4 @@ class LevelsMenuPage(BasePage):
         scroll = qtw.QScrollArea()
         scroll.set_widget(LevelsList())
         layout.add_widget(scroll)
-        # layout.add_stretch()
-        # layout.add_stretch()
-        # layout.add_stretch()
         self.set_layout(layout)

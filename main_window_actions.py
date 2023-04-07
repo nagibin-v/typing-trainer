@@ -2,6 +2,9 @@ from singleton import Singleton
 
 
 class MainWindowActions(metaclass=Singleton):
+    """
+    The MainWindowActions is a singleton containing the page-switching functions
+    """
     def __init__(self):
         self.next_level_function = None
         self.home_function = None

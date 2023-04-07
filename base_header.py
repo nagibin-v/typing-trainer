@@ -5,6 +5,12 @@ from constraints import fonts
 
 
 class BaseHeader(qtw.QLabel):
+    """
+    BaseHeader is a standard header used in the interface, inherits QLabel
+
+    Parameters:
+        text (str): the title of the header
+    """
     def __init__(self, text: str):
         super().__init__()
         self.font = fonts.HEADER_FONT

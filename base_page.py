@@ -5,6 +5,10 @@ from constraints import sizes
 
 
 class BasePage(qtw.QFrame):
+    """
+    BasePage is the base class for pages of app, inherits QFrame
+    It sets up the standard design of a page, takes no parameters
+    """
     def __init__(self):
         super().__init__()
         self.line_width = 3

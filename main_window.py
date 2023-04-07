@@ -4,15 +4,20 @@ from enum import Enum
 from functools import partial
 from constraints import sizes, texts
 from base_button import BaseButton
+from base_page import BasePage
 from main_window_actions import MainWindowActions
 from typing_page import TypingPage
 from main_menu_page import MainMenuPage
 from levels_menu_page import LevelsMenuPage
 from statistics_page import StatisticsPage
 from upload_level_page import UploadLevelPage
+from level_validator import LevelValidator
 
 
 class State(Enum):
+    """
+    State is an Enum representing the current page shown
+    """
     MAIN_MENU = 1
     LEVELS_MENU = 2
     RUN_LEVEL = 3
@@ -21,6 +26,14 @@ class State(Enum):
 
 
 class MainWindow(qtw.QMainWindow):
+    """
+    MainWindow is the main window of the app, inherits QMainWindow
+    Does not take any parameters
+    Attributes:
+        state (State): current state
+        container (QFrame): widget containing current page
+        home_button (BaseButton): button to go to main page
+    """
     def __init__(self):
         super().__init__()
         self.window_title = texts.TITLE
@@ -39,6 +52,9 @@ class MainWindow(qtw.QMainWindow):
         self.load_state()
 
     def setup_main_window_actions(self) -> None:
+        """
+        Sets up the MainWindowActions()'s functions which are called from MainWindow object
+        """
         actions = MainWindowActions()
         actions.home_function = partial(MainWindow.switch_to, self, State.MAIN_MENU)
         actions.levels_function = partial(MainWindow.switch_to, self, State.LEVELS_MENU)
@@ -48,7 +64,14 @@ class MainWindow(qtw.QMainWindow):
         actions.level_run_function = partial(MainWindow.run_level, self)
         actions.next_level_function = partial(MainWindow.run_next_level, self)
 
-    def make_widget_by_state(self) -> qtw.QWidget:
+    def make_page_by_state(self) -> BasePage:
+        """
+        Creates a page by current state
+        Raises:
+            ValueError: not correct state
+        Returns:
+            page (BasePage), an instance of a necessary page
+        """
         if self.state == State.MAIN_MENU:
             return MainMenuPage()
         elif self.state == State.LEVELS_MENU:
@@ -60,11 +83,13 @@ class MainWindow(qtw.QMainWindow):
         elif self.state == State.UPLOAD_LEVEL:
             return UploadLevelPage()
         else:
-            # maybe should throw some exception
-            pass
+            raise ValueError("MainWindow.state should be one of the State options")
 
     def load_state(self) -> None:
-        cur = self.make_widget_by_state()
+        """
+        Reloads current page, shows or hides home button
+        """
+        cur = self.make_page_by_state()
         self.container.layout().add_widget(cur)
         self.container.layout().set_current_widget(cur)
         if self.state == State.MAIN_MENU:
@@ -72,30 +97,14 @@ class MainWindow(qtw.QMainWindow):
         else:
             self.home_button.show()
 
-    def check_valid_level(self, file_path: str) -> bool:
-        try:
-            file = open(file_path, 'r')
-        except FileNotFoundError or FileExistsError:
-            return False
-        lines = file.readlines()
-        if len(lines) <= 2:
-            return False
-        second_line = lines[1].split()
-        if len(second_line) != 2:
-            return False
-        try:
-            goal_speed = int(second_line[0])
-            goal_accuracy = float(second_line[1])
-        except ValueError:
-            return False
-        if goal_speed < 0 or goal_speed > 500:
-            return False
-        if goal_accuracy < 0 or goal_accuracy > 1:
-            return False
-        return True
-
     def run_level(self, file_path: str) -> None:
-        if not self.check_valid_level(file_path):
+        """
+        Switches page to level page and runs level located at file_path
+        Parameters:
+            file_path (str): path to file to load
+        In case file_path is incorrect, shows message box
+        """
+        if not LevelValidator.is_level_valid(file_path):
             message = qtw.QMessageBox()
             message.critical(self, 'Error', texts.ERROR_INVALID_FILE)
             return
@@ -103,6 +112,10 @@ class MainWindow(qtw.QMainWindow):
         self.switch_to(State.RUN_LEVEL)
 
     def run_next_level(self) -> None:
+        """
+        Loads the next level
+        In case current level is not one of the pre-made levels, does nothing
+        """
         if self.level_to_load[:len(texts.LEVEL_PATH_FIRST)] != texts.LEVEL_PATH_FIRST:
             return
         if self.level_to_load[-len(texts.LEVEL_PATH_LAST):] != texts.LEVEL_PATH_LAST:
@@ -112,5 +125,10 @@ class MainWindow(qtw.QMainWindow):
         self.run_level(next_level)
 
     def switch_to(self, new_state: State) -> None:
+        """
+        Switches state to new_state, loads the page
+        Parameters:
+            new_state (State): new state
+        """
         self.state = new_state
         self.load_state()

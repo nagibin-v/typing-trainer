@@ -25,7 +25,7 @@ There are currently 25 pre-made educational levels and 10 extra levels. Also, yo
 <Goal speed> <Goal accuracy>
 <Text>
 ```
-Title should be a one-line string, goal speed should be an integer number from 1 to 250 (it is measured in Words Per Minutes), goal accuracy should be a real number from 0 to 1. Text might contain uppercase and lowercase English letters, digits and special symbols. 
+Title should be a one-line string, goal speed should be a real number from 1 to 250 (it is measured in Words Per Minutes), goal accuracy should be a real number from 0 to 1. Text might contain uppercase and lowercase English letters, digits and special symbols. 
 
 ## Developers
 Created by Vsevolod Nagibin in spring 2023

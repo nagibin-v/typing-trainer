@@ -8,6 +8,10 @@ from main_window_actions import MainWindowActions
 
 
 class Instruction(qtw.QTextBrowser):
+    """
+    Instruction is a widget showing instruction for user-made levels, inherits QTextBrowser
+    Does not take any parameters
+    """
     def __init__(self):
         super().__init__()
         with open(texts.INSTRUCTION_PATH, 'r') as file:
@@ -17,6 +21,10 @@ class Instruction(qtw.QTextBrowser):
 
 
 class UploadLevelPage(BasePage):
+    """
+    UploadLevelPage is a page for level uploading, inherits BasePage
+    Does not take any parameters
+    """
     def __init__(self):
         super().__init__()
         layout = qtw.QVBoxLayout()
@@ -26,5 +34,8 @@ class UploadLevelPage(BasePage):
         self.set_layout(layout)
 
     def load_level(self) -> None:
+        """
+        Shows the dialog to choose file and loads chosen level
+        """
         file_name = qtw.QFileDialog.get_open_file_name(self, filter='Text (*.txt)')[0]
         MainWindowActions().level_run_function(file_name)

@@ -15,6 +15,24 @@ from base_header import BaseHeader
 
 
 class Typer(qtw.QTextEdit):
+    """
+    Typer is a widget where the user types the text and sees the text to type, inherits QTextEdit
+    Also it collects the information about types, namely speed and accuracy
+
+    Parameters:
+        text (str): text to type
+        goal_speed (float): speed user should have to get maximal score
+        goal_accuracy (float): accuracy user should have to get maximal score
+        status_bar (QStatusBar): status bar to write current speed
+
+    Attributes:
+        typing_text (str): the text to type
+        goal_speed (float)
+        goal_accuracy (float)
+        progress (int): the number of symbols typed correctly
+        start_time_stamp (float): the moment of the start of typing
+        mistakes_counter (Counter[str, int]): Counter counting mistakes
+    """
     def __init__(self, text: str, goal_speed: float, goal_accuracy: float, status_bar: qtw.QStatusBar):
         super().__init__()
         self.typing_text = text
@@ -26,26 +44,47 @@ class Typer(qtw.QTextEdit):
         self.status_bar = status_bar
         self.mistakes_counter = Counter()
 
-    def format_text_to_html(self, text: str, color: str) -> str:
+    @staticmethod
+    def format_text_to_html(text: str, color: str) -> str:
+        """
+        Formats text to html so that all symbols are displayed right and colored in color
+        Parameters:
+            text (str): text to format
+            color (str): color of text #RRGGBB
+        Returns:
+            line (str): formatted text
+        """
         return f'<t style="color: {color};white-space:pre-wrap">' + \
             html.escape(text).replace('\n', '↵<br />').replace('\t', ' ⇥ ') + '</t>'
 
     def move_cursor_to_place(self) -> None:
+        """
+        Moves the cursor after the symbols typed correctly
+        """
         cur_cursor = self.text_cursor()
         cur_cursor.set_position(self.progress + self.typing_text[:self.progress].count('\n') +
                                 self.typing_text[:self.progress].count('\t') * 2)
         self.set_text_cursor(cur_cursor)
 
     def update_text(self) -> None:
+        """
+        Updates the displayed text so the color of typed is green and the color of the rest is gray, moves the cursor
+        """
         self.font = fonts.TYPER_FONT
         self.html = (self.format_text_to_html(self.typing_text[:self.progress], colors.GREEN_COLOR) +
                      self.format_text_to_html(self.typing_text[self.progress:], colors.GRAY_COLOR))
         self.move_cursor_to_place()
 
     def update_status(self) -> None:
+        """
+        Shows status bar message with speed
+        """
         self.status_bar.show_message(f'{texts.SPEED_TEXT}: {self.get_speed():.2f} {texts.SPEED_RESOLUTION}', 500)
 
     def key_press_event(self, event) -> None:
+        """
+        Overloaded virtual function, calls type with the typed symbol
+        """
         if self.progress == len(self.typing_text):
             return
         symbol = event.text()
@@ -55,9 +94,14 @@ class Typer(qtw.QTextEdit):
             symbol = '\n'
         if symbol == "":
             return
-        self.typed(symbol)
+        self.type(symbol)
 
-    def typed(self, symbol: str) -> None:
+    def type(self, symbol: str) -> None:
+        """
+        Does staff when symbol is typed, recolors text if it is correct and counts the mistake otherwise
+        Parameters:
+            symbol (str): symbol typed
+        """
         need = self.typing_text[self.progress]
         if need == symbol:
             self.progress += 1
@@ -69,18 +113,32 @@ class Typer(qtw.QTextEdit):
             self.mistakes_counter[need] += 1
 
     def get_speed(self) -> float:
+        """
+        Return current speed in Words Per Minute
+        Returns:
+            speed (float)
+        """
         cur_time = (time.time_ns() - self.start_time_stamp) / 10 ** 9 / 60  # in minutes
         cur_word_count = self.progress / 5  # in words
         return cur_word_count / cur_time
 
     def get_accuracy(self) -> float:
+        """
+        Return current accuracy, the share of symbols typed correctly
+        Returns:
+            accuracy (float)
+        """
         all_cnt = self.progress + self.mistakes_counter.total()
         return self.progress / all_cnt
 
     def finish_level(self) -> None:
+        """
+        Finishes level, updates the statistics and shows the level end widget
+        """
         StatisticsCalculator().add_stats(self.mistakes_counter, Counter(self.typing_text))
         self.set_layout(FinishLayout(self.get_speed(), self.goal_speed, self.get_accuracy(), self.goal_accuracy))
 
+    # overloaded functions for user not to be able to do anything on Typer with mouse
     def mouse_press_event(self, event):
         pass
 
@@ -89,6 +147,14 @@ class Typer(qtw.QTextEdit):
 
 
 class FinishLayout(qtw.QVBoxLayout):
+    """
+    FinishLayout is a layout of interface when level is finished, inherits QVBoxLayout
+    Parameters:
+        speed (float): user's speed
+        goal_speed (float): level goal speed
+        accuracy (float): user's accuracy
+        goal_accuracy (float): level goal accuracy
+    """
     def __init__(self, speed: float, goal_speed: float, accuracy: float, goal_accuracy: float):
         super().__init__()
         self.set_alignment(qtc.Qt.AlignmentFlag.AlignCenter)
@@ -97,11 +163,33 @@ class FinishLayout(qtw.QVBoxLayout):
         self.add_widget(self.make_buttons())
         self.add_stretch()
 
-    def get_score(self, speed: float, goal_speed: float, accuracy: float, goal_accuracy: float) -> int:
+    @staticmethod
+    def get_score(speed: float, goal_speed: float, accuracy: float, goal_accuracy: float) -> int:
+        """
+        Calculates the score of user based on his speed and accuracy.
+        The score is an integer from 0 to 5000
+        Parameters:
+            speed (float): user's speed
+            goal_speed (float): level goal speed
+            accuracy (float): user's accuracy
+            goal_accuracy (float): level goal accuracy
+        Returns:
+            score (int)
+        """
         return math.ceil(min(speed, goal_speed) / goal_speed * 2500 +
                          min(accuracy, goal_accuracy) / goal_accuracy * 2500)
 
     def make_score_widget(self, speed: float, goal_speed: float, accuracy: float, goal_accuracy: float) -> qtw.QFrame:
+        """
+        Creates a widget showing score, speed and accuracy
+        Parameters:
+            speed (float): user's speed
+            goal_speed (float): level goal speed
+            accuracy (float): user's accuracy
+            goal_accuracy (float): level goal accuracy
+        Returns:
+            score_widget (QFrame)
+        """
         score_widget = qtw.QFrame()
         score_widget.line_width = 3
         score_widget.set_frame_style(qtw.QFrame.Panel | qtw.QFrame.Raised)
@@ -122,7 +210,13 @@ class FinishLayout(qtw.QVBoxLayout):
         score_widget.set_layout(layout)
         return score_widget
 
-    def make_buttons(self) -> qtw.QFrame:
+    @staticmethod
+    def make_buttons() -> qtw.QFrame:
+        """
+        Creates the buttons to main menu, restart and next level
+        Returns:
+            buttons (QFrame)
+        """
         buttons = qtw.QFrame()
         buttons.set_fixed_size(qtc.QSize(sizes.SCORE_WINDOW_WIDTH, sizes.BUTTON_SIZE))
         layout = qtw.QHBoxLayout()
@@ -134,12 +228,22 @@ class FinishLayout(qtw.QVBoxLayout):
 
 
 class TypingSpeedometer(qtw.QStatusBar):
+    """
+    TypingSpeedometer is a status bar to show current speed, inherits QStatusBar
+    Does not take any parameters
+    """
     def __init__(self):
         super().__init__()
         self.font = fonts.TYPER_STATUS_BAR_FONT
 
 
 class TypingPage(BasePage):
+    """
+    TypingPage is a page where user completes the level
+
+    Parameters:
+        file_path (str): path to file with level
+    """
     def __init__(self, file_path: str):
         super().__init__()
         with open(file_path, 'r') as file:
