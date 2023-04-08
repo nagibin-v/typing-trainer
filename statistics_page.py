@@ -31,6 +31,7 @@ class KeyDisplay(qtw.QLabel):
         self.auto_fill_background = True
         self.set_frame_style(qtw.QFrame.Panel | qtw.QFrame.Raised)
         self.set_fixed_size(qtc.QSize(width, statistics.KEY_SIZE))
+        self.set_style_sheet(f'color: {colors.WHITE_COLOR}')
         self.font = fonts.KEY_FONT
         self.alignment = qtc.Qt.AlignmentFlag.AlignCenter
         self.update_view()
