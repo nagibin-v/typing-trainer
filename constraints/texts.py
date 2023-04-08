@@ -16,6 +16,8 @@ SPEED_RESOLUTION = 'WPM'
 ACCURACY_TEXT = 'ACCURACY'
 ACCURACY_RESOLUTION = '%'
 
+NO_DATA_TEXT = 'NO DATA'
+
 ERROR_INVALID_FILE = 'This file is not valid!'
 
 INSTRUCTION_PATH = 'constraints/instruction.html'

@@ -1,7 +1,7 @@
 from PySide6 import QtWidgets as qtw, QtCore as qtc
 from __feature__ import snake_case, true_property
 
-from constraints import sizes
+from constraints import sizes, colors
 
 
 class BasePage(qtw.QFrame):

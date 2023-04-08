@@ -49,9 +49,9 @@ class KeyDisplay(qtw.QLabel):
         """
         accuracy = self.get_accuracy()
         if accuracy == -1:
-            self.tool_tip = 'No data'
+            self.tool_tip = f'<font color=black>{texts.NO_DATA_TEXT}</font>'
         else:
-            self.tool_tip = f'Accuracy: {accuracy * 100:.0f}%'
+            self.tool_tip = f'<Font color=black>{texts.ACCURACY_TEXT}: {accuracy * 100:.0f}%</font>'
 
     def get_color(self) -> qtg.QColor:
         """
