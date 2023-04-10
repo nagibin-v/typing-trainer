@@ -1,0 +1,3 @@
+Lagrange's theorem
+80 0.95
+In the mathematical field of group theory, Lagrange's theorem is a theorem that states that for any finite group G, the order (number of elements) of every subgroup of G divides the order of G. The theorem is named after Joseph-Louis Lagrange. The following variant states that for a subgroup H of a finite group G, not only is |G| / |H| an integer, but its value is the index [G:H], defined as the number of left cosets of H in G.

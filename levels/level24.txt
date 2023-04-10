@@ -1,0 +1,3 @@
+Keyboard layout history
+60 0.95
+Keyboard layouts have evolved over time, usually alongside major technology changes. Particularly influential have been: the Sholes and Glidden typewriter (1874, also known as Remington No. 1), the first commercially successful typewriter, which introduced QWERTY;[14] its successor, the Remington No. 2 (1878), which introduced the shift key; the IBM Selectric (1961), a very influential electric typewriter, which was imitated by computer keyboards;[15] and the IBM PC (1981), namely the Model M (1985), which is the basis for many modern keyboard layouts.

@@ -1,0 +1,5 @@
+Basis
+80 0.95
+In mathematics, a set B of vectors in a vector space V is called a basis if every element of V may be written in a unique way as a finite linear combination of elements of B. The coefficients of this linear combination are referred to as components or coordinates of the vector with respect to B. The elements of a basis are called basis vectors.
+Equivalently, a set B is a basis if its elements are linearly independent and every element of V is a linear combination of elements of B. In other words, a basis is a linearly independent spanning set.
+A vector space can have several bases; however all the bases have the same number of elements, called the dimension of the vector space.

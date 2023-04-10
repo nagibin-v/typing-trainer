@@ -1,0 +1,12 @@
+Special symbols
+60 0.95
+Press ; and ' with shift key to write : and "
+Press [ and ] with shift key to write { and }
+Press , and . with shift key to write < and >
+Press / and \ with shift key to write ? and |
+a: int, 15 < 17, 23 > 8, is it right?
+int main {
+  array[0] = a | b ? 0 : 17;
+  std::string text = "abacaba".substr(0, 3);
+  char c = '\n';
+}

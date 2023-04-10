@@ -1,0 +1,22 @@
+Convex Hull Trick
+100 0.97
+struct CHT {
+	vector<pair<long long, long long>> lines;
+	vector<long long> points;
+	void add(const pair<long long, long long>& line) {
+		if (lines.empty()) {
+			lines.emplace_back(line);
+			return;
+		}
+		while (!points.empty() && points.back() >= inter(lines.back(), line)) {
+			points.pop_back();
+			lines.pop_back();
+		}
+		points.emplace_back(inter(lines.back(), line));
+		lines.emplace_back(line);
+	}
+	long long get(long long x) {
+		int id = upper_bound(points.begin(), points.end(), x) - points.begin();
+		return at(lines[id], x);
+	}
+};
